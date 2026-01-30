@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/capital-markets-investments/',
+  base: '/2026spring/',
   build: {
     outDir: 'dist',
   },
