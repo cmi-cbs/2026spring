@@ -1,0 +1,91 @@
+{
+  "startDate": "2026-01-28",
+  "initialInvestment": 10000,
+  "sections": [
+    {
+      "id": "001",
+      "instructor": "Prof. Simon Oh",
+      "name": "Section 001",
+      "holdings": [
+        { "ticker": "COST", "company": "Costco", "votes": 8 },
+        { "ticker": "NFLX", "company": "Netflix", "votes": 7 },
+        { "ticker": "NKE", "company": "Nike", "votes": 5 },
+        { "ticker": "AMZN", "company": "Amazon", "votes": 4 },
+        { "ticker": "AAPL", "company": "Apple", "votes": 4 },
+        { "ticker": "GOOGL", "company": "Alphabet / Google", "votes": 4 },
+        { "ticker": "SPOT", "company": "Spotify", "votes": 3 },
+        { "ticker": "NVDA", "company": "Nvidia", "votes": 3 },
+        { "ticker": "TSLA", "company": "Tesla", "votes": 3 },
+        { "ticker": "LLY", "company": "Eli Lilly", "votes": 2 }
+      ]
+    },
+    {
+      "id": "002",
+      "instructor": "Prof. Simon Oh",
+      "name": "Section 002",
+      "holdings": [
+        { "ticker": "COST", "company": "Costco", "votes": 10 },
+        { "ticker": "AAPL", "company": "Apple", "votes": 8 },
+        { "ticker": "SPOT", "company": "Spotify", "votes": 6 },
+        { "ticker": "NFLX", "company": "Netflix", "votes": 5 },
+        { "ticker": "GOOGL", "company": "Google", "votes": 5 },
+        { "ticker": "TGT", "company": "Target", "votes": 3 },
+        { "ticker": "LLY", "company": "Eli Lilly", "votes": 3 },
+        { "ticker": "AMZN", "company": "Amazon", "votes": 2 },
+        { "ticker": "CMCSA", "company": "Comcast", "votes": 2 },
+        { "ticker": "NKE", "company": "Nike", "votes": 2 }
+      ]
+    },
+    {
+      "id": "003",
+      "instructor": "Prof. Simon Oh",
+      "name": "Section 003",
+      "holdings": [
+        { "ticker": "BBW", "company": "Build-A-Bear Workshop", "votes": 12 },
+        { "ticker": "COST", "company": "Costco", "votes": 6 },
+        { "ticker": "NFLX", "company": "Netflix", "votes": 6 },
+        { "ticker": "TSLA", "company": "Tesla", "votes": 4 },
+        { "ticker": "AMZN", "company": "Amazon", "votes": 4 },
+        { "ticker": "SPOT", "company": "Spotify", "votes": 4 },
+        { "ticker": "KO", "company": "Coca-Cola", "votes": 4 },
+        { "ticker": "AAPL", "company": "Apple", "votes": 3 },
+        { "ticker": "RDDT", "company": "Reddit", "votes": 2 },
+        { "ticker": "GOOGL", "company": "Alphabet", "votes": 2 }
+      ]
+    },
+    {
+      "id": "007",
+      "instructor": "Prof. Federico Mainardi",
+      "name": "Section 007",
+      "holdings": [
+        { "ticker": "TCEHY", "company": "Tencent", "votes": 2 },
+        { "ticker": "SPOT", "company": "Spotify", "votes": 2 },
+        { "ticker": "WMT", "company": "Walmart", "votes": 2 },
+        { "ticker": "COF", "company": "Capital One", "votes": 1 },
+        { "ticker": "COST", "company": "Costco", "votes": 1 },
+        { "ticker": "TM", "company": "Toyota", "votes": 1 },
+        { "ticker": "BE", "company": "Bloom Energy", "votes": 1 },
+        { "ticker": "TJX", "company": "TJX Companies", "votes": 1 },
+        { "ticker": "SHOP", "company": "Shopify", "votes": 1 },
+        { "ticker": "GRMN", "company": "Garmin", "votes": 1 }
+      ]
+    },
+    {
+      "id": "008",
+      "instructor": "Prof. Federico Mainardi",
+      "name": "Section 008",
+      "holdings": [
+        { "ticker": "AAPL", "company": "Apple", "votes": 3 },
+        { "ticker": "TSLA", "company": "Tesla", "votes": 2 },
+        { "ticker": "GOOGL", "company": "Alphabet", "votes": 2 },
+        { "ticker": "AMZN", "company": "Amazon", "votes": 2 },
+        { "ticker": "TSM", "company": "TSMC", "votes": 1 },
+        { "ticker": "TMO", "company": "Thermo Fisher Scientific", "votes": 1 },
+        { "ticker": "EXP", "company": "Eagle Materials", "votes": 1 },
+        { "ticker": "AMD", "company": "AMD", "votes": 1 },
+        { "ticker": "ABNB", "company": "Airbnb", "votes": 1 },
+        { "ticker": "CVS", "company": "CVS Health", "votes": 1 }
+      ]
+    }
+  ]
+}
