@@ -68,6 +68,14 @@ h3 {
   font-size: 0.95rem;
 }
 
+.header .tagline {
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--foreground);
+}
+
 .header .last-updated {
   margin-top: 12px;
   font-size: 0.85rem;
