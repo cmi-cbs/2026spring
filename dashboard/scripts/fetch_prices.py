@@ -47,11 +47,6 @@ def main():
     # Get today's date
     today = date.today().isoformat()
 
-    # Skip if we already have today's data
-    if today in price_data["prices"]:
-        print(f"Already have prices for {today}, skipping.")
-        return
-
     # Fetch prices using yfinance
     # Download last 5 days to handle weekends/holidays
     try:
@@ -77,12 +72,9 @@ def main():
         closes = data[["Close"]]
         closes.columns = [list(tickers)[0]]
 
-    # Process each trading day we got
+    # Process each trading day we got (always update to get latest prices)
     for idx in closes.index:
         date_str = idx.strftime("%Y-%m-%d")
-
-        if date_str in price_data["prices"]:
-            continue  # Already have this date
 
         day_prices = {}
         for ticker in tickers:
@@ -95,7 +87,7 @@ def main():
 
         if day_prices:
             price_data["prices"][date_str] = day_prices
-            print(f"Added prices for {date_str}: {len(day_prices)} tickers")
+            print(f"Updated prices for {date_str}: {len(day_prices)} tickers")
 
     # Update timestamp
     price_data["lastUpdated"] = datetime.utcnow().isoformat() + "Z"
