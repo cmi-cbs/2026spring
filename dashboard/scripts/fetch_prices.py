@@ -11,6 +11,18 @@ from pathlib import Path
 import yfinance as yf
 
 
+def get_latest_stored_price(price_data, target_date, ticker):
+    for date_str in sorted(price_data["prices"].keys(), reverse=True):
+        if date_str >= target_date:
+            continue
+
+        price = price_data["prices"].get(date_str, {}).get(ticker)
+        if price is not None:
+            return price
+
+    return None
+
+
 def main():
     # Paths
     script_dir = Path(__file__).parent
@@ -82,8 +94,13 @@ def main():
                 price = closes.loc[idx, ticker]
                 if not pd.isna(price):
                     day_prices[ticker] = round(float(price), 2)
+                    continue
             except (KeyError, TypeError):
                 pass  # Ticker not in data or NaN
+
+            fallback_price = get_latest_stored_price(price_data, date_str, ticker)
+            if fallback_price is not None:
+                day_prices[ticker] = fallback_price
 
         if day_prices:
             price_data["prices"][date_str] = day_prices

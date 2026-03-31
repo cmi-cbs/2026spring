@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { PortfolioConfig, PriceData, Section, PortfolioValue } from '../types';
 
+export type WeightingMethod = 'vote' | 'equal';
+
 export function usePortfolioData() {
   const [portfolioConfig, setPortfolioConfig] = useState<PortfolioConfig | null>(null);
   const [priceData, setPriceData] = useState<PriceData | null>(null);
@@ -40,21 +42,60 @@ export function usePortfolioData() {
   return { portfolioConfig, priceData, loading, error };
 }
 
+function getHoldingWeight(section: Section, ticker: string, weighting: WeightingMethod): number {
+  if (weighting === 'equal') {
+    return 1 / section.holdings.length;
+  }
+
+  const totalVotes = section.holdings.reduce((sum, h) => sum + h.votes, 0);
+  const holding = section.holdings.find((item) => item.ticker === ticker);
+
+  if (!holding || totalVotes === 0) {
+    return 0;
+  }
+
+  return holding.votes / totalVotes;
+}
+
+function getLatestAvailablePrice(
+  priceData: PriceData,
+  sortedDates: string[],
+  targetDate: string,
+  ticker: string
+): number | null {
+  const targetIndex = sortedDates.indexOf(targetDate);
+
+  if (targetIndex === -1) {
+    return null;
+  }
+
+  for (let i = targetIndex; i >= 0; i--) {
+    const price = priceData.prices[sortedDates[i]]?.[ticker];
+    if (typeof price === 'number') {
+      return price;
+    }
+  }
+
+  return null;
+}
+
 export function calculatePortfolioValue(
   section: Section,
-  prices: Record<string, number>,
-  startPrices: Record<string, number>,
-  initialInvestment: number
+  priceData: PriceData,
+  currentDate: string,
+  startDate: string,
+  initialInvestment: number,
+  weighting: WeightingMethod = 'vote'
 ): number {
   if (section.holdings.length === 0) return 0;
 
-  const totalVotes = section.holdings.reduce((sum, h) => sum + h.votes, 0);
+  const sortedDates = Object.keys(priceData.prices).sort();
   let totalValue = 0;
 
   for (const holding of section.holdings) {
-    const weight = holding.votes / totalVotes;
-    const startPrice = startPrices[holding.ticker];
-    const currentPrice = prices[holding.ticker];
+    const weight = getHoldingWeight(section, holding.ticker, weighting);
+    const startPrice = getLatestAvailablePrice(priceData, sortedDates, startDate, holding.ticker);
+    const currentPrice = getLatestAvailablePrice(priceData, sortedDates, currentDate, holding.ticker);
 
     if (startPrice && currentPrice) {
       const shares = (weight * initialInvestment) / startPrice;
@@ -69,22 +110,27 @@ export function calculatePortfolioHistory(
   section: Section,
   priceData: PriceData,
   startDate: string,
-  initialInvestment: number
+  initialInvestment: number,
+  weighting: WeightingMethod = 'vote'
 ): PortfolioValue[] {
   if (section.holdings.length === 0) return [];
 
   const dates = Object.keys(priceData.prices).sort();
-  const startPrices = priceData.prices[startDate];
-
-  if (!startPrices) return [];
+  if (!dates.includes(startDate)) return [];
 
   const history: PortfolioValue[] = [];
 
   for (const date of dates) {
     if (date < startDate) continue;
 
-    const prices = priceData.prices[date];
-    const value = calculatePortfolioValue(section, prices, startPrices, initialInvestment);
+    const value = calculatePortfolioValue(
+      section,
+      priceData,
+      date,
+      startDate,
+      initialInvestment,
+      weighting
+    );
 
     if (value > 0) {
       history.push({ date, value });

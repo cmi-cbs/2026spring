@@ -204,6 +204,51 @@ h3 {
   margin-bottom: 16px;
 }
 
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.comparison-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.comparison-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.comparison-card-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.comparison-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.comparison-stats .positive {
+  color: var(--success);
+}
+
+.comparison-stats .negative {
+  color: var(--danger);
+}
+
 /* Holdings Table */
 .holdings-table-container {
   background: white;

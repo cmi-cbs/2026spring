@@ -3,12 +3,13 @@ import { Header } from './components/Header';
 import { TabSelector } from './components/TabSelector';
 import { HoldingsPieCharts } from './components/HoldingsPieCharts';
 import { PerformanceChart } from './components/PerformanceChart';
+import { WeightingComparison } from './components/WeightingComparison';
 import {
   usePortfolioData,
   calculatePortfolioHistory
 } from './hooks/usePortfolioData';
 
-type Tab = 'holdings' | 'performance';
+type Tab = 'holdings' | 'performance' | 'weighting';
 
 function App() {
   const { portfolioConfig, priceData, loading, error } = usePortfolioData();
@@ -27,6 +28,30 @@ function App() {
           priceData,
           portfolioConfig.startDate,
           portfolioConfig.initialInvestment
+        )
+      }));
+  }, [portfolioConfig, priceData]);
+
+  const allSectionsWeightingHistory = useMemo(() => {
+    if (!portfolioConfig || !priceData) return [];
+
+    return portfolioConfig.sections
+      .filter((section) => section.holdings.length > 0)
+      .map((section) => ({
+        section,
+        voteHistory: calculatePortfolioHistory(
+          section,
+          priceData,
+          portfolioConfig.startDate,
+          portfolioConfig.initialInvestment,
+          'vote'
+        ),
+        equalHistory: calculatePortfolioHistory(
+          section,
+          priceData,
+          portfolioConfig.startDate,
+          portfolioConfig.initialInvestment,
+          'equal'
         )
       }));
   }, [portfolioConfig, priceData]);
@@ -66,6 +91,13 @@ function App() {
           initialInvestment={portfolioConfig.initialInvestment}
           priceData={priceData}
           startDate={portfolioConfig.startDate}
+        />
+      )}
+
+      {activeTab === 'weighting' && (
+        <WeightingComparison
+          sectionsData={allSectionsWeightingHistory}
+          initialInvestment={portfolioConfig.initialInvestment}
         />
       )}
     </>

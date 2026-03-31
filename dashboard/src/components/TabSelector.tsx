@@ -1,4 +1,4 @@
-type Tab = 'holdings' | 'performance';
+type Tab = 'holdings' | 'performance' | 'weighting';
 
 interface TabSelectorProps {
   activeTab: Tab;
@@ -20,6 +20,12 @@ export function TabSelector({ activeTab, onSelect }: TabSelectorProps) {
           onClick={() => onSelect('performance')}
         >
           Performance
+        </button>
+        <button
+          className={activeTab === 'weighting' ? 'active' : ''}
+          onClick={() => onSelect('weighting')}
+        >
+          EW vs. VW
         </button>
       </div>
     </div>

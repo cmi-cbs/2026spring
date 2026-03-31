@@ -232,7 +232,7 @@ export function PerformanceChart({ sectionsData, initialInvestment, priceData, s
   return (
     <div className="container">
       <div className="chart-container">
-        <h3>Portfolio Performance Comparison</h3>
+        <h3>Vote-Weighted Portfolio Performance</h3>
         <ResponsiveContainer width="100%" height={450}>
           <LineChart
             data={chartData}
