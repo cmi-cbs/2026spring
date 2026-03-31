@@ -46,30 +46,7 @@ function addBusinessDays(dateStr: string, days: number): string {
   return date.toISOString().split('T')[0];
 }
 
-// Helper to round to nice tick values
-function getNiceTickValues(min: number, max: number, targetTicks: number = 5): number[] {
-  const range = max - min;
-  const roughStep = range / (targetTicks - 1);
-
-  // Round to nice step values (50, 100, 200, 250, 500, etc.)
-  const niceSteps = [50, 100, 200, 250, 500, 1000];
-  let step = niceSteps[0];
-  for (const s of niceSteps) {
-    if (s >= roughStep) {
-      step = s;
-      break;
-    }
-  }
-
-  const niceMin = Math.floor(min / step) * step;
-  const niceMax = Math.ceil(max / step) * step;
-
-  const ticks: number[] = [];
-  for (let v = niceMin; v <= niceMax; v += step) {
-    ticks.push(v);
-  }
-  return ticks;
-}
+const PERFORMANCE_TICKS = [7500, 10000, 12500];
 
 export function PerformanceChart({ sectionsData, initialInvestment, priceData, startDate }: PerformanceChartProps) {
   if (sectionsData.length === 0 || sectionsData.every(s => s.history.length === 0)) {
@@ -172,6 +149,8 @@ export function PerformanceChart({ sectionsData, initialInvestment, priceData, s
     }).format(value);
   };
 
+  const formatThousands = (value: number) => `${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}K`;
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr + 'T12:00:00');
     return date.toLocaleDateString('en-US', {
@@ -179,26 +158,6 @@ export function PerformanceChart({ sectionsData, initialInvestment, priceData, s
       day: 'numeric'
     });
   };
-
-  // Calculate Y-axis domain with nice round numbers
-  let minValue = initialInvestment;
-  let maxValue = initialInvestment;
-  sectionsData.forEach(({ history }) => {
-    history.forEach(({ value }) => {
-      if (value < minValue) minValue = value;
-      if (value > maxValue) maxValue = value;
-    });
-  });
-  // Include SPY in range calculation
-  Object.values(spyValues).forEach(value => {
-    if (value < minValue) minValue = value;
-    if (value > maxValue) maxValue = value;
-  });
-
-  // Get nice tick values
-  const yTicks = getNiceTickValues(minValue * 0.98, maxValue * 1.02);
-  const yMin = yTicks[0];
-  const yMax = yTicks[yTicks.length - 1];
 
   // Custom label renderer for YTD returns
   const renderReturnLabel = (props: { x?: number; y?: number; value?: number; index?: number }, dataKey: string) => {
@@ -247,9 +206,9 @@ export function PerformanceChart({ sectionsData, initialInvestment, priceData, s
               tickMargin={10}
             />
             <YAxis
-              domain={[yMin, yMax]}
-              ticks={yTicks}
-              tickFormatter={formatCurrency}
+              domain={[PERFORMANCE_TICKS[0], PERFORMANCE_TICKS[PERFORMANCE_TICKS.length - 1]]}
+              ticks={PERFORMANCE_TICKS}
+              tickFormatter={formatThousands}
               stroke="#666A70"
               fontSize={12}
               width={80}

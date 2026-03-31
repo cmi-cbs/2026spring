@@ -29,6 +29,8 @@ const SECTION_COLORS: Record<string, string> = {
   '008': '#EC4899'
 };
 
+const COMPARISON_TICKS = [7500, 10000, 12500];
+
 function formatCurrency(value: number) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -36,6 +38,10 @@ function formatCurrency(value: number) {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(value);
+}
+
+function formatThousands(value: number) {
+  return `${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}K`;
 }
 
 function formatDate(dateStr: string) {
@@ -77,7 +83,7 @@ export function WeightingComparison({ sectionsData, initialInvestment }: Weighti
           const voteReturn = getFinalReturn(voteHistory, initialInvestment);
           const equalReturn = getFinalReturn(equalHistory, initialInvestment);
           const gap =
-            voteReturn !== null && equalReturn !== null ? voteReturn - equalReturn : null;
+            voteReturn !== null && equalReturn !== null ? equalReturn - voteReturn : null;
           const sectionColor = SECTION_COLORS[section.id] || '#3B82F6';
 
           return (
@@ -107,10 +113,12 @@ export function WeightingComparison({ sectionsData, initialInvestment }: Weighti
                     tickMargin={10}
                   />
                   <YAxis
+                    domain={[COMPARISON_TICKS[0], COMPARISON_TICKS[COMPARISON_TICKS.length - 1]]}
+                    ticks={COMPARISON_TICKS}
                     stroke="#666A70"
                     fontSize={11}
                     width={72}
-                    tickFormatter={formatCurrency}
+                    tickFormatter={formatThousands}
                   />
                   <Tooltip
                     formatter={(value: number, name: string) => [
